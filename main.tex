@@ -13,14 +13,166 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{indentfirst}
+\usepackage{parskip}
 
-\title{Software design}
-\author{...}
+\title{Software Design Project}
+
+\author{Artiom Garbul, Artūras Mecelis, Elvinas Švilpa, Mykolas Budrys, Viktorija Šimonėlytė}
 
 \begin{document}
-\centering
 
 \maketitle
-\thispagestyle{empty}
+\clearpage
+
+\section{Introduction}
+
+This document provides detailed documentation of a Point of Sale (POS) system designed specifically for small to medium-sized catering and beauty businesses. The platform centralizes customer order management, supports scheduling and handling of appointments and provides a universal software-based service suitable for a wide range of day-to-day business operational needs.
+
+\section{Business flows}
+\subsection{Practical business flow examples}
+To start of with building a POS system, practical examples as to the possible business flows are required.
+
+% pridėti pavadinimus 
+A practical example involving a walk-in customer order:
+\begin{enumerate}
+    \item Clients arrive to a restaurant;
+
+    % rezervacijos nebūtinos restoranams
+    \item Waiter asks if they have a reservation;
+    
+    \item Clients do not have a reservation, waiter checks if there are free tables in the system, if so, occupies a table in the system and guides them to the free table;
+    
+    \item Waiter takes clients' order;
+    
+    \item Waiter registers clients' order in the system, complete with food, drink or other items, includes special requests or allergies;
+    
+    \item Kitchen staff receives the order and starts preparing it;
+    
+    \item Kitchen staff selects that the meals are ready in the system, they are delivered to the table by the waiter;
+    
+    \item Clients ask for additional items;
+    
+    \item Waiter takes clients' additional order and registers it to the same order;
+    
+    \item Clients ask for the bill;
+    
+    \item Waiter extracts the itemized and tax-included receipt from the system for their table, may provide split bills;
+    
+    \item Clients pay using cash, bank or gift card;
+    
+    \item Clients possibly leave a tip;
+    
+    \item Waiter registers the tip in the system and finalizes the order in the system marking it as complete;
+\end{enumerate}
+
+An example of a beauty salon appointment:
+\begin{enumerate}
+    \item A customer visits a beauty salon or calls on the phone to make a reservation for an appointment;
+    
+    \item The receptionist asks what type of service the client wants;
+    
+    \item The client specifies which service they need and the receptionist checks the system for free time slots for that service;
+    
+    \item The client chooses when they would like to have the appointment.
+    
+    \item The receptionist creates a reservation for the specified time and types in the following information of the appointment: client's name and telephone number, the time of the appointment, the service type and the specialist doing the service;
+    
+    \item The system registers the appointment and adds to it the time it was created;
+    
+    \item The client receives an SMS saying that the reservation has been made;
+    
+    \item After a few days the client calls the salon and asks to change the appointment time;
+    
+    \item The receptionist finds the reservation and changes the appointment time to another available time;
+    
+    \item The client shows up at the salon on the day of their appointment;
+    
+    \item The receptionist asks if they have a reservation;
+    
+    \item The client does have a reservation and tells the receptionist their name;
+    
+    \item The receptionist finds the reservation in the system, creates an order for the appointment and selects the chosen services;
+    
+    \item After the appointment, the client goes to the receptionist to pay;
+    
+    \item The system adds a tax to the order. The receptionist may add a discount and the client can choose to give a tip;
+    
+    \item The client can pay by cash, credit or debit card and a gift card;
+    
+    \item After the payment is processed, the order is closed;
+\end{enumerate}
+
+\section{Package diagram}
+% Konsultacijai:
+% ar reikia rezervacijų kavinėms
+% Ar tinkami Business flow
+
+% jei daugiau negu 10, tai darom persmulkiai
+% 1. Package diagrams.
+%    Acount class
+%    Business Class   
+%    
+%  NO INT on price/currency 
+%  Money class
+\section{Data model}
+\begin{itemize}
+    % bazine rekvizitu
+    % kontaktinė informacija
+    % produktu pasirinkimas
+    % kontaktai prie rezervacijos
+    \item Business: Id, Business name, Type 
+    \item Worker: Id, Business id, Position, Username, Password
+    \item Product: Id, Business id, Name, Additional parameters, Price
+    \item Order: Id, Business id, Discount id, Tax id, Bonus info
+    \item Order-product: Order id, Product id
+    \item Service: Id, Business id, Name, Worker id, Additional parameters, Price
+    \item Reservation: Id, Business id, Discount id, Tax id, Time when booked, Appointment time, Customer name, Customer contacts
+    \item Reservation-service: Reservation id, Service id
+    \item Discount: Id, Business id, Percent
+    \item Tax: Id, Business id, Percent
+\end{itemize}
+
+\section{API Contracts}
+\subsection{HTTP requests}
+
+\subsection{HTTP responses}
+
+\subsection{HTTP error codes}
+
+
+% Catering:
+%  Client
+%   Get receipt
+%   Pay using cash, bank or gift card
+
+%  Waiter
+%   Create reservations
+%   Check reservations,
+%   Check taken/free tables
+%   Mark tables as taken/free
+%   Create order, add some special requests
+%   See order status
+%   Change existing orders
+%   Create receipt
+%   Add discount/tip to order
+
+%  Kitchen staff
+%   See order
+%   Mark order as done
+
+% Beauty:
+%  Client
+%   Give personal info
+%   Get SMS confirmation
+%   Pay using cash, bank or gift card
+
+%  Receptionist
+%   Check time slots for services
+%   Check reservations
+%   Create reservations
+%   Mark times for services as taken/free
+%   Change reservations
+%   Add discount/tip to order
 
 \end{document}
