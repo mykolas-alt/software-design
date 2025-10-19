@@ -33,7 +33,7 @@
     {\large Mathematics and Informatics Faculty}\\[0.3cm]
     {\large Software Engineering study program, III course}\\[3cm]
     
-    {\Huge \textbf{PoS system software design document}}\\[3cm]
+    {\Huge \textbf{PoS System Software Design Document}}\\[3cm]
     
     \begin{flushleft}
     Viktorija Šimonėlytė 4 gr. \\
@@ -64,9 +64,9 @@ This document provides detailed documentation of a Point of Sale (POS) system de
 To start of with building a POS system, practical examples as to the possible business flows are required.
 
 \subsubsection{Restaurant Order Business Flow}
-The restaurant order flow (Figure \ref{figures:sequence_restaurant}) illustrates the customer experience within a restaurant setting. The waiter uses the POS system to confirm reservations, check for available tables, marking the tables occupied. All the orders are being registered through the POS system, which also sends order information to the kitchen staff.
+The restaurant order flow (Figure \ref{figures:sequence_restaurant}) illustrates the customer experience within a restaurant setting. The waiter uses the POS system to confirm reservations, check for available tables, and mark occupied tables. All orders are registered through the POS system, which also sends order information to the kitchen staff.
 
-Once meals are ready, the POS system notifies the waiter to deliver the food to the customer. The system also accommodates additional orders during the visit. At checkout, the POS system generates an itemized receipt, supports split billing, registers payments and records tips. The order then is finalized and marked as complete. 
+Once the meals are ready, the POS system notifies the waiter to deliver the food to the customer. The system also accommodates additional orders during the visit. At checkout, the POS system generates an itemized receipt, supports split billing, registers payments, and records tips. The order is then finalized and marked as complete. 
 
 % pridėti pavadinimus 
 A practical example involving a walk-in customer order:
@@ -97,7 +97,7 @@ An example of a beauty salon appointment:
 
 \subsubsection{Business Owner Management Business Flow}
 
-The business owner business flow (Figure \ref{figures:sequence_business_owner}) depics how business owners interact with the POS system to manage their business operations. After logging in, owners access the management dashboard to handle administrative tasks such as managing inventory, taxes, discounts and more. Additionally, owners can manage user accounts, update business details. 
+The business owner business flow (Figure \ref{figures:sequence_business_owner}) depicts how business owners interact with the POS system to manage their business operations. After logging in, owners access the management dashboard to handle administrative tasks such as managing inventory, taxes, discounts and more. Additionally, owners can manage user accounts, update business details. 
 SuperAdmin intervention is also supported, allowing oversight and configuration when necessary. 
 
 An example of a business owner configuring the system:
@@ -122,7 +122,7 @@ To better visualize how the system would look, we can make wireframes. Wireframe
     \label{fig:wireframe_product_selection}
 \end{figure}
 
-The wireframe in Figure \ref{fig:wireframe_product_selection} shows the product selection page for order creation. The user can search for dishes by selecting the category(soups, drinks, etc.) and choosing one of the displayed items. It is also possible to search for dishes by typing in at least a part of the name of the wanted item. The selected items show up in the order information section along with the quantity selected and price. At the bottom of the order information section the subtotal and total of the whole order are displayed. Below there is a button \enquote{Pay now} that lets the user proceed to the payment for this order.
+The wireframe in Figure \ref{fig:wireframe_product_selection} shows the product selection page for order creation. The user can search for dishes by selecting the category (soups, drinks, etc.) and choosing one of the displayed items. It is also possible to search for dishes by typing in at least a part of the name of the wanted item. The selected items show up in the order information section along with the quantity selected and price. At the bottom of the order information section the subtotal and total of the whole order are displayed. Below there is a button \enquote{Pay now} that lets the user proceed to the payment for this order.
 
 
 \section{Package diagram}
@@ -214,7 +214,6 @@ To address this problem, we will use the entity lifecycle mechanism. Selected en
 The diagram in Fig. \ref{fig:data_model} shows the main entities within our data model as well as which entities will be lifecycled (highlighted in green).
 
 \begin{itemize}
-    % should not be lifecycled if authorization is only done by the actual role and not functions assigned to a role(which then could change)?
     \item \textbf{AccountRole:} Main entity for authorization. Account roles can be created or modified by business owners. Business owners will always have the role BusinessOwner assigned. The created roles can be assigned functions (Order creation, order view, etc.) which are mapped to specific functionalities within the system. Account roles will be used when looking up wether the executing user can execute a certain function.
     \item \textbf{Function:} These represent the functions within the system.
     \item \textbf{AccountRoleFunctionLink:} Used to assign specific functions to a specific role and a access level (view initiate) for that function.
@@ -227,7 +226,9 @@ The diagram in Fig. \ref{fig:data_model} shows the main entities within our data
     \end{itemize}
     \item \textbf{Bussiness:} Entity representing a registered business. May only have a single owner.
     \item \textbf{Item:} An item that can be registered to a specific business which can be used to form orders.
+    \item \textbf{ItemInventory:} A separate table (although can me combined with Item) to \textbf{OPTIONALLY} track item inventory in the system. If a row does not exist for a specific Item that means the item's quantity is not being tracked.
     \item \textbf{ItemOption:} An item specific additional option (Almond milk on coffee). The price modifier will be a flat value which can either be negative or positive in order to indicate wether the item price will be reduced or increased by the set value, or unmodified if set to 0.
+    \item \textbf{ItemOptionInventory:} A separate table (although can me combined with ItemOption) to \textbf{OPTIONALLY} track item inventory in the system. If a row does not exist for a specific ItemOption that means the ItemOptions's quantity is not being tracked.
     \item \textbf{ItemOptionLink:} Used to add item options to an item in a specific order. Item options can only be assigned/removed to/from an order if the order is not in a final state (Confirmed, Completed, Refunded, etc.).
     \item \textbf{PriceModifier:} Entity for handling discounts and taxes. The modifier type will be used to identify wether the modifier is a \textbf{flat} discount/tax or a \textbf{percentage} based one. The identifier will advise on how we should use the value to calculate the final price of an item/reservation.
     \item \textbf{PriceModifierOrderLink:} Used to add a discount/tax o a specific item in a specific order.
@@ -242,730 +243,153 @@ The diagram in Fig. \ref{fig:data_model} shows the main entities within our data
 \end{itemize}
 
 \section{API Contracts}
-
-\hspace*{1em}\textbf{ } /\\
-\hspace*{2em}Description: \\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{ } In: Query, Type: string. Username of account that will be created\\
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{201} Successfully created\\
-\hspace*{3em}\textbf{400} Invalid input
-
 \subsection{HTTP requests}
-\textbf{Worker:}\\
-\hspace*{1em}\textbf{POST} /worker\\
-\hspace*{2em}Description: Create worker account\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{username} In: Query, Type: string. Username of account that will be created\\
-\hspace*{3em}\textbf{name} In: Query, Type: string. Name of account that will be created\\
-\hspace*{3em}\textbf{password} In: Query, Type: string. Password of account that will be created\\
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{201} Successfully created\\
-\hspace*{3em}\textbf{400} Invalid input
 
-\hspace*{1em}\textbf{POST} /worker/login\\
-\hspace*{2em}Description: Log in to worker account\\
-\hspace*{2em}Request body:
-\begin{verbatim}
-        {
-            "username": "user123",
-            "password: "password123"
-        }
-\end{verbatim}
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation\\
-\hspace*{3em}\textbf{400} Invalid input\\
-\hspace*{3em}\textbf{401} Invalid password\\
-\hspace*{3em}\textbf{404} Account not found
+\textbf{Account:}\\
+\hspace*{1em}\textbf{POST} /account\\
+\hspace*{2em}Description: Create worker account
 
-\hspace*{1em}\textbf{GET} /worker/\{username\}\\
-\hspace*{2em}Description: Get worker account information\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{username} In: Path, Type: string. Username of account\\
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation. Response body:
-\begin{verbatim}
-        {
-          "id": 10,
-          "username": "theUser",
-          "businessId": 2,
-          "roles": [
-            "Cashier",
-            "Barista"
-          ]
-        }
-\end{verbatim}
-\hspace*{3em}\textbf{400} Invalid input\\
-\hspace*{3em}\textbf{404} Account not found
+\hspace*{1em}\textbf{GET} /account\\
+\hspace*{2em}Description: Get all accounts (with pagination)
 
-\hspace*{1em}\textbf{POST} /worker/\{id\}/role\\
-\hspace*{2em}Description: Add role to worker account\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{id} In: Query, Type: integer. Id of account to which role will be added\\
-\hspace*{3em}\textbf{roleId} In: Path, Type: string. Role to be added to account\\
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation\\
-\hspace*{3em}\textbf{400} Invalid input\\
-\hspace*{3em}\textbf{403} Modifier does not have permission to add role\\
-\hspace*{3em}\textbf{404} Role not found
+\hspace*{1em}\textbf{POST} /account/login\\
+\hspace*{2em}Description: Log in to account
 
-\hspace*{1em}\textbf{PUT} /worker/\{id\}/role/\{roleId\}\\
-\hspace*{2em}Description: Change role of worker account\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{id} In: Path, Type: integer. Id of account\\
-\hspace*{3em}\textbf{roleId} In: Path, Type: integer. Id of role in account\\
-\hspace*{3em}\textbf{newRoleId} In: Query, Type: string. New role id that will replace old role\\
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation\\
-\hspace*{3em}\textbf{400} Invalid input\\
-\hspace*{3em}\textbf{403} Modifier does not have permission to change role\\
-\hspace*{3em}\textbf{404} Role not found
+\hspace*{1em}\textbf{GET} /account/\{id\}\\
+\hspace*{2em}Description: Get account information
+
+\hspace*{1em}\textbf{DELETE} /account/\{id\}\\
+\hspace*{2em}Description: Delete an account
+
+\textbf{AccountRole:}\\
+\hspace*{1em}\textbf{POST} /account/role\\
+\hspace*{2em}Description: Create a new role for business
+
+\hspace*{1em}\textbf{GET} /account/role\\
+\hspace*{2em}Description: Get all roles for current business
+
+\hspace*{1em}\textbf{GET} /account/role/\{roleId\}\\
+\hspace*{2em}Description: Get details of a specific role
+
+\hspace*{1em}\textbf{PUT} /account/role/\{roleId\}\\
+\hspace*{2em}Description: Update role details
+
+\hspace*{1em}\textbf{DELETE} /account/role/\{roleId\}\\
+\hspace*{2em}Description: Delete a role
+
+\hspace*{1em}\textbf{POST} /account/role/\{roleId\}/function\\
+\hspace*{2em}Description: Assign a function to a role with specified access level
+
+\hspace*{1em}\textbf{GET} /account/role/\{roleId\}/function\\
+\hspace*{2em}Description: Get all functions assigned to a specific role
+
+\hspace*{1em}\textbf{POST} /account/\{accountId\}/role\\
+\hspace*{2em}Description: Assign a role to an account
+
+\hspace*{1em}\textbf{GET} /account/\{accountId\}/role\\
+\hspace*{2em}Description: Get all roles assigned to an account
+
+\hspace*{1em}\textbf{PUT} /account/\{accountId\}/role/\{roleId\}\\
+\hspace*{2em}Description: Update the status of a role assigned to an account
+
+\textbf{Function:}\\
+\hspace*{1em}\textbf{GET} /function\\
+\hspace*{2em}Description: Get all available system functions
 
 \textbf{Business:}\\
 \hspace*{1em}\textbf{POST} /business\\
-\hspace*{2em}Description: Create business\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{name} In: Query, Type: string. Name of business that will be created\\
-\hspace*{3em}\textbf{type} In: Query, Type: enum. Type of business. catering/beauty\\
-\hspace*{2em}Request body:
-\begin{verbatim}
-        {
-          "name": "Bakery",
-          "ownerId": 10,
-          "type": "catering",
-          "address": "123 Main St, Cityville",
-          "phone": "+1-555-1234",
-          "email": "jonhdoe@gmail.com"
-        }
-\end{verbatim}
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{201} Successfully created\\
-\hspace*{3em}\textbf{400} Invalid input
+\hspace*{2em}Description: Create business
+
+\hspace*{1em}\textbf{GET} /business\\
+\hspace*{2em}Description: Get all businesses user has access to
 
 \hspace*{1em}\textbf{GET} /business/\{id\}\\
-\hspace*{2em}Description: Get business information\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{id} In: Path, Type: integer. Id of business\\
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation. Response body:
-\begin{verbatim}
-        {
-          "id": 4,
-          "name": "Bakery",
-          "ownerId": 10,
-          "type": "catering",
-          "address": "123 Main St, Cityville",
-          "phone": "+1-555-1234",
-          "email": "jonhdoe@gmail.com"
-        }
-\end{verbatim}
-\hspace*{3em}\textbf{400} Invalid input
-
-\hspace*{1em}\textbf{PUT} /\{businessId\}/business/\{id\}\\
-\hspace*{2em}Description: Add worker to business\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business for which worker will be added\\
-\hspace*{3em}\textbf{id} In: Path, Type: integer. Id of worker account\\
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation\\
-\hspace*{3em}\textbf{400} Invalid input\\
-\hspace*{3em}\textbf{403} Modifier does not have permission to add worker\\
-\hspace*{3em}\textbf{404} Worker not found
-
-\textbf{Role:}\\
-\hspace*{1em}\textbf{POST} /\{businessId\}/role\\
-\hspace*{2em}Description: Create new role\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business for which role will be created\\
-\hspace*{3em}\textbf{name} In: Query, Type: string. Name of role that will be created\\
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{201} Successfully created\\
-\hspace*{3em}\textbf{400} Invalid input\\
-\hspace*{3em}\textbf{403} Modifier does not have permission to create role
-
-\hspace*{1em}\textbf{GET} /\{businessId\}/role\\
-\hspace*{2em}Description: Get all roles of business\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business from which role information will be taken\\
-\hspace*{3em}\textbf{page} In: Query, Type: integer. Page number for pagination\\
-\hspace*{3em}\textbf{pageSize} In: Query, Type: integer. Page size for pagination\\
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation. Response body:
-\begin{verbatim}
-        [
-            {
-              "id": 3,
-              "name": "Manager"
-            }
-        ]
-\end{verbatim}
-\hspace*{3em}\textbf{400} Invalid input\\
+\hspace*{2em}Description: Get business information
 
 \textbf{Item:}\\
-\hspace*{1em}\textbf{POST} /\{businessId\}/item\\
-\hspace*{2em}Description: Create item for business\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business for which item will be created\\
-\hspace*{2em}Request body:
-\begin{verbatim}
-        {
-          "id": 2,
-          "businessId": 6,
-          "name": "Cake",
-          "price": 14.59,
-          "options": [
-            "cream",
-            "strawberry"
-          ]
-        }
-\end{verbatim}
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{201} Successfully created\\
-\hspace*{3em}\textbf{400} Invalid input\\
-\hspace*{3em}\textbf{403} Modifier does not have permission to create item
+\hspace*{1em}\textbf{POST} /item\\
+\hspace*{2em}Description: Create item for current business
 
-\hspace*{1em}\textbf{GET} /\{businessId\}/item\\
-\hspace*{2em}Description: Get all items of business\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business from which item information will be taken\\
-\hspace*{3em}\textbf{page} In: Query, Type: integer. Page number for pagination\\
-\hspace*{3em}\textbf{pageSize} In: Query, Type: integer. Page size for pagination\\
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation. Response body:
-\begin{verbatim}
-        [
-            {
-              "id": 2,
-              "businessId": 6,
-              "name": "Cake",
-              "price": 14.59,
-              "options": [
-                "cream",
-                "strawberry"
-              ]
-            }
-        ]
-\end{verbatim}
-\hspace*{3em}\textbf{400} Invalid input
+\hspace*{1em}\textbf{GET} /item\\
+\hspace*{2em}Description: Get all items of current business
 
-\hspace*{1em}\textbf{GET} /\{businessId\}/item/\{id\}\\
-\hspace*{2em}Description: Get item by id\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business from which item information will be taken\\
-\hspace*{3em}\textbf{id} In: Path, Type: integer. Id of item which information will be taken\\
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation. Response body:
-\begin{verbatim}
-        {
-          "id": 2,
-          "businessId": 6,
-          "name": "Cake",
-          "price": 14.59,
-          "options": [
-            "cream",
-            "strawberry"
-          ]
-        }
-\end{verbatim}
-\hspace*{3em}\textbf{400} Invalid input\\
-\hspace*{3em}\textbf{404} Item not found
+\hspace*{1em}\textbf{GET} /item/\{id\}\\
+\hspace*{2em}Description: Get item by id
 
-\hspace*{1em}\textbf{PUT} /\{businessId\}/item/\{id\}\\
-\hspace*{2em}Description: Edit item from business\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business from which item information will be taken\\
-\hspace*{3em}\textbf{id} In: Path, Type: integer. Id of item which information will be changed\\
-\hspace*{2em}Request body:\\
-\begin{verbatim}
-        {
-          "id": 2,
-          "businessId": 6,
-          "name": "Cake",
-          "price": 14.59,
-          "options": [
-            "cream",
-            "strawberry"
-          ]
-        }
-\end{verbatim}
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation\\
-\hspace*{3em}\textbf{400} Invalid input\\
-\hspace*{3em}\textbf{403} Modifier does not have permission to change item\\
-\hspace*{3em}\textbf{404} Item not found
+\hspace*{1em}\textbf{PUT} /item/\{id\}\\
+\hspace*{2em}Description: Edit item
+
+\hspace*{1em}\textbf{DELETE} /item/\{id\}\\
+\hspace*{2em}Description: Delete an item
+
+\textbf{ItemOption:}\\
+\hspace*{1em}\textbf{POST} /item-option\\
+\hspace*{2em}Description: Create a new item option
+
+\hspace*{1em}\textbf{GET} /item-option\\
+\hspace*{2em}Description: Get all item options
+
+\hspace*{1em}\textbf{GET} /item-option/\{id\}\\
+\hspace*{2em}Description: Get item option by id
+
+\hspace*{1em}\textbf{PUT} /item-option/\{id\}\\
+\hspace*{2em}Description: Update an item option
+
+\hspace*{1em}\textbf{DELETE} /item-option/\{id\}\\
+\hspace*{2em}Description: Delete an item option
 
 \textbf{Order:}\\
-\hspace*{1em}\textbf{POST} /\{businessId\}/order\\
-\hspace*{2em}Description: Create order for business\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business for which order will be created\\
-\hspace*{2em}Request body:
-\begin{verbatim}
-        {
-          "id": 2,
-          "workerId": 6,
-          "datePlaced": "2024-01-15T10:30:00Z",
-          "status": "Open",
-          "tipAmount": 1.5,
-          "serviceCharge": 2,
-          "items": [
-            {
-              "itemId": 2,
-              "quantity": 1,
-              "options": [
-                "cream"
-              ]
-            },
-            {
-              "itemId": 3,
-              "quantity": 2,
-              "options": [
-                "no sugar"
-              ]
-            }
-          ]
-        }
-\end{verbatim}
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{201} Successfully created\\
-\hspace*{3em}\textbf{400} Invalid input
+\hspace*{1em}\textbf{POST} /\\
+\hspace*{2em}Description: Create a new order
 
-\hspace*{1em}\textbf{GET} /\{businessId\}/order\\
-\hspace*{2em}Description: Get all orders of business\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business from which order information will be taken\\
-\hspace*{3em}\textbf{page} In: Query, Type: integer. Page number for pagination\\
-\hspace*{3em}\textbf{pageSize} In: Query, Type: integer. Page size for pagination\\
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation. Response body:
-\begin{verbatim}
-        [
-            {
-              "id": 2,
-              "workerId": 6,
-              "datePlaced": "2024-01-15T10:30:00Z",
-              "status": "Open",
-              "tipAmount": 1.5,
-              "serviceCharge": 2,
-              "items": [
-                {
-                  "itemId": 2,
-                  "quantity": 1,
-                  "options": [
-                    "cream"
-                  ]
-                },
-                {
-                  "itemId": 3,
-                  "quantity": 2,
-                  "options": [
-                    "no sugar"
-                  ]
-                }
-              ]
-            }
-        ]
-\end{verbatim}
-\hspace*{3em}\textbf{400} Invalid input
+\hspace*{1em}\textbf{GET} /\\
+\hspace*{2em}Description: Get all orders
 
-\hspace*{1em}\textbf{GET} /\{businessId\}/order/\{id\}\\
-\hspace*{2em}Description: Get order by id\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business from which order information will be taken\\
-\hspace*{3em}\textbf{id} In: Path, Type: integer. Id of order which information will be taken\\
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation. Response body:
-\begin{verbatim}
-        {
-          "id": 2,
-          "workerId": 6,
-          "datePlaced": "2024-01-15T10:30:00Z",
-          "status": "Open",
-          "tipAmount": 1.5,
-          "serviceCharge": 2,
-          "items": [
-            {
-              "itemId": 2,
-              "quantity": 1,
-              "options": [
-                "cream"
-              ]
-            },
-            {
-              "itemId": 3,
-              "quantity": 2,
-              "options": [
-                "no sugar"
-              ]
-            }
-          ]
-        }
-\end{verbatim}
-\hspace*{3em}\textbf{400} Invalid input\\
-\hspace*{3em}\textbf{404} Order not found
+\hspace*{1em}\textbf{GET} /\\
+\hspace*{2em}Description: Get order by id
 
-\hspace*{1em}\textbf{PUT} /\{businessId\}/order/\{id\}\\
-\hspace*{2em}Description: Edit order from business\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business from which order information will be taken\\
-\hspace*{3em}\textbf{id} In: Path, Type: integer. Id of order which information will be changed\\
-\hspace*{2em}Request body:\\
-\begin{verbatim}
-        {
-          "id": 2,
-          "workerId": 6,
-          "datePlaced": "2024-01-15T10:30:00Z",
-          "status": "Open",
-          "tipAmount": 1.5,
-          "serviceCharge": 2,
-          "items": [
-            {
-              "itemId": 2,
-              "quantity": 1,
-              "options": [
-                "cream"
-              ]
-            },
-            {
-              "itemId": 3,
-              "quantity": 2,
-              "options": [
-                "no sugar"
-              ]
-            }
-          ]
-        }
-\end{verbatim}
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation\\
-\hspace*{3em}\textbf{400} Invalid input\\
-\hspace*{3em}\textbf{404} Order not found
+\hspace*{1em}\textbf{PUT} /\\
+\hspace*{2em}Description: 
+
+\hspace*{1em}\textbf{POST} /\\
+\hspace*{2em}Description: 
+
+\hspace*{1em}\textbf{GET} /\\
+\hspace*{2em}Description: 
+
+\hspace*{1em}\textbf{PUT} /\\
+\hspace*{2em}Description: 
+
+\hspace*{1em}\textbf{DELETE} /\\
+\hspace*{2em}Description: 
+
+\hspace*{1em}\textbf{POST} /\\
+\hspace*{2em}Description: 
+
+\hspace*{1em}\textbf{POST} /\\
+\hspace*{2em}Description: 
+
+\hspace*{1em}\textbf{GET} /\\
+\hspace*{2em}Description: 
+
+\hspace*{1em}\textbf{DELETE} /\\
+\hspace*{2em}Description: 
 
 \textbf{Service:}\\
-\hspace*{1em}\textbf{POST} /\{businessId\}/service\\
-\hspace*{2em}Description: Create service for business\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business for which service will be created\\
-\hspace*{2em}Request body:
-\begin{verbatim}
-        {
-          "id": 1,
-          "businessId": 2,
-          "name": "Massage",
-          "price": 14.59,
-          "serviceCharge": 2,
-          "workerId": 5
-        }
-\end{verbatim}
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{201} Successfully created\\
-\hspace*{3em}\textbf{400} Invalid input\\
-\hspace*{3em}\textbf{403} Modifier does not have permission to create service
-
-\hspace*{1em}\textbf{GET} /\{businessId\}/service\\
-\hspace*{2em}Description: Get all services of business\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business from which service information will be taken\\
-\hspace*{3em}\textbf{page} In: Query, Type: integer. Page number for pagination\\
-\hspace*{3em}\textbf{pageSize} In: Query, Type: integer. Page size for pagination\\
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation. Response body:
-\begin{verbatim}
-        [
-            {
-              "id": 1,
-              "businessId": 2,
-              "name": "Massage",
-              "price": 14.59,
-              "serviceCharge": 2,
-              "workerId": 5
-            }
-        ]
-\end{verbatim}
-\hspace*{3em}\textbf{400} Invalid input
-
-\hspace*{1em}\textbf{GET} /\{businessId\}/service/\{id\}\\
-\hspace*{2em}Description: Get service by id\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business from which service information will be taken\\
-\hspace*{3em}\textbf{id} In: Path, Type: integer. Id of service which information will be taken\\
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation. Response body:
-\begin{verbatim}
-        {
-          "id": 1,
-          "businessId": 2,
-          "name": "Massage",
-          "price": 14.59,
-          "serviceCharge": 2,
-          "workerId": 5
-        }
-\end{verbatim}
-\hspace*{3em}\textbf{400} Invalid input\\
-\hspace*{3em}\textbf{404} Service not found
-
-\hspace*{1em}\textbf{PUT} /\{businessId\}/service/\{id\}\\
-\hspace*{2em}Description: Edit service from business\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business from which service information will be taken\\
-\hspace*{3em}\textbf{id} In: Path, Type: integer. Id of service which information will be changed\\
-\hspace*{2em}Request body:\\
-\begin{verbatim}
-        {
-          "id": 1,
-          "businessId": 2,
-          "name": "Massage",
-          "price": 14.59,
-          "serviceCharge": 2,
-          "workerId": 5
-        }
-\end{verbatim}
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation\\
-\hspace*{3em}\textbf{400} Invalid input\\
-\hspace*{3em}\textbf{403} Modifier does not have permission to change service\\
-\hspace*{3em}\textbf{404} Service not found
+\hspace*{1em}\textbf{ } /\\
+\hspace*{2em}Description: 
 
 \textbf{Reservation:}\\
-\hspace*{1em}\textbf{POST} /\{businessId\}/reservation\\
-\hspace*{2em}Description: Create reservation for business\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business for which reservation will be created\\
-\hspace*{2em}Request body:
-\begin{verbatim}
-        {
-          "id": 2,
-          "workerId": 6,
-          "datePlaced": "2024-01-15T10:30:00Z",
-          "dateOfService": "2024-01-17T12:00:00Z",
-          "reservationLength": 60,
-          "serviceId": 3,
-          "status": "Open",
-          "tipAmount": 1.5,
-          "servicingWorkerId": 5,
-          "customer": "John Doe"
-        }
-\end{verbatim}
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{201} Successfully created\\
-\hspace*{3em}\textbf{400} Invalid input
+\hspace*{1em}\textbf{ } /\\
+\hspace*{2em}Description: 
 
-\hspace*{1em}\textbf{GET} /\{businessId\}/reservation\\
-\hspace*{2em}Description: Get all reservations of business\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business from which reservations information will be taken\\
-\hspace*{3em}\textbf{page} In: Query, Type: integer. Page number for pagination\\
-\hspace*{3em}\textbf{pageSize} In: Query, Type: integer. Page size for pagination\\
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation. Response body:
-\begin{verbatim}
-        [
-            {
-              "id": 2,
-              "workerId": 6,
-              "datePlaced": "2024-01-15T10:30:00Z",
-              "dateOfService": "2024-01-17T12:00:00Z",
-              "reservationLength": 60,
-              "serviceId": 3,
-              "status": "Open",
-              "tipAmount": 1.5,
-              "servicingWorkerId": 5,
-              "customer": "John Doe"
-            }
-        ]
-\end{verbatim}
-\hspace*{3em}\textbf{400} Invalid input
+\textbf{Payment:}\\
+\hspace*{1em}\textbf{ } /\\
+\hspace*{2em}Description: 
 
-\hspace*{1em}\textbf{GET} /\{businessId\}/reservation/\{id\}\\
-\hspace*{2em}Description: Get reservation by id\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business from which reservation information will be taken\\
-\hspace*{3em}\textbf{id} In: Path, Type: integer. Id of reservation which information will be taken\\
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation. Response body:
-\begin{verbatim}
-        {
-          "id": 2,
-          "workerId": 6,
-          "datePlaced": "2024-01-15T10:30:00Z",
-          "dateOfService": "2024-01-17T12:00:00Z",
-          "reservationLength": 60,
-          "serviceId": 3,
-          "status": "Open",
-          "tipAmount": 1.5,
-          "servicingWorkerId": 5,
-          "customer": "John Doe"
-        }
-\end{verbatim}
-\hspace*{3em}\textbf{400} Invalid input\\
-\hspace*{3em}\textbf{404} Reservation not found
-
-\hspace*{1em}\textbf{PUT} /\{businessId\}/reservation/\{id\}\\
-\hspace*{2em}Description: Edit reservation from business\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business from which reservation information will be taken\\
-\hspace*{3em}\textbf{id} In: Path, Type: integer. Id of reservation which information will be changed\\
-\hspace*{2em}Request body:\\
-\begin{verbatim}
-        {
-          "id": 2,
-          "workerId": 6,
-          "datePlaced": "2024-01-15T10:30:00Z",
-          "dateOfService": "2024-01-17T12:00:00Z",
-          "reservationLength": 60,
-          "serviceId": 3,
-          "status": "Open",
-          "tipAmount": 1.5,
-          "servicingWorkerId": 5,
-          "customer": "John Doe"
-        }
-\end{verbatim}
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation\\
-\hspace*{3em}\textbf{400} Invalid input\\
-\hspace*{3em}\textbf{404} Reservation not found
-
-\textbf{Discount:}\\
-\hspace*{1em}\textbf{POST} /\{businessId\}/discount\\
-\hspace*{2em}Description: Create discount for business\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business for which discount will be created\\
-\hspace*{2em}Request body:
-\begin{verbatim}
-        {
-          "id": 1,
-          "businessId": 2,
-          "name": "Holiday Sale",
-          "rate": 15,
-          "validFrom": "2024-12-01T00:00:00Z",
-          "validTo": "2024-12-31T23:59:59Z"
-        }
-\end{verbatim}
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{201} Successfully created\\
-\hspace*{3em}\textbf{400} Invalid input\\
-\hspace*{3em}\textbf{403} Modifier does not have permission to create discount
-
-\hspace*{1em}\textbf{GET} /\{businessId\}/discount\\
-\hspace*{2em}Description: Get all discounts of business\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business from which discount information will be taken\\
-\hspace*{3em}\textbf{page} In: Query, Type: integer. Page number for pagination\\
-\hspace*{3em}\textbf{pageSize} In: Query, Type: integer. Page size for pagination\\
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation. Response body:
-\begin{verbatim}
-        [
-            {
-              "id": 1,
-              "businessId": 2,
-              "name": "Holiday Sale",
-              "rate": 15,
-              "validFrom": "2024-12-01T00:00:00Z",
-              "validTo": "2024-12-31T23:59:59Z"
-            }
-        ]
-\end{verbatim}
-\hspace*{3em}\textbf{400} Invalid input
-
-\hspace*{1em}\textbf{GET} /\{businessId\}/discount/\{id\}\\
-\hspace*{2em}Description: Get discount by id\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business from which discount information will be taken\\
-\hspace*{3em}\textbf{id} In: Path, Type: integer. Id of discount which information will be taken\\
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation. Response body:
-\begin{verbatim}
-        {
-          "id": 1,
-          "businessId": 2,
-          "name": "Holiday Sale",
-          "rate": 15,
-          "validFrom": "2024-12-01T00:00:00Z",
-          "validTo": "2024-12-31T23:59:59Z"
-        }
-\end{verbatim}
-\hspace*{3em}\textbf{400} Invalid input\\
-\hspace*{3em}\textbf{404} Discount not found
-
-\hspace*{1em}\textbf{PUT} /\{businessId\}/discount/\{id\}\\
-\hspace*{2em}Description: Edit discount from business\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business from which discount information will be taken\\
-\hspace*{3em}\textbf{id} In: Path, Type: integer. Id of discount which information will be changed\\
-\hspace*{2em}Request body:\\
-\begin{verbatim}
-        {
-          "id": 1,
-          "businessId": 2,
-          "name": "Holiday Sale",
-          "rate": 15,
-          "validFrom": "2024-12-01T00:00:00Z",
-          "validTo": "2024-12-31T23:59:59Z"
-        }
-\end{verbatim}
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation\\
-\hspace*{3em}\textbf{400} Invalid input\\
-\hspace*{3em}\textbf{403} Modifier does not have permission to change discount\\
-\hspace*{3em}\textbf{404} Discount not found
-
-\textbf{Tax:}\\
-\hspace*{1em}\textbf{POST} /\{businessId\}/tax\\
-\hspace*{2em}Description: Create tax for business\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business for which tax will be created\\ In: Path,
-\hspace*{2em}Request body:
-\begin{verbatim}
-        {
-          "id": 4,
-          "businessId": 5,
-          "name": "Sales Tax",
-          "rate": 15
-        }
-\end{verbatim}
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{201} Successfully created\\
-\hspace*{3em}\textbf{400} Invalid input\\
-\hspace*{3em}\textbf{403} Modifier does not have permission to create tax
-
-\hspace*{1em}\textbf{GET} /\{businessId\}/tax\\
-\hspace*{2em}Description: Get all taxes of business\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business from which tax information will be taken\\
-\hspace*{3em}\textbf{page} In: Query, Type: integer. Page number for pagination\\
-\hspace*{3em}\textbf{pageSize} In: Query, Type: integer. Page size for pagination\\
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation. Response body:
-\begin{verbatim}
-        [
-            {
-              "id": 4,
-              "businessId": 5,
-              "name": "Sales Tax",
-              "rate": 15
-            }
-        ]
-\end{verbatim}
-\hspace*{3em}\textbf{400} Invalid input
-
-\hspace*{1em}\textbf{GET} /\{businessId\}/tax/\{id\}\\
-\hspace*{2em}Description: Get tax by id\\
-\hspace*{2em}Parameters:\\
-\hspace*{3em}\textbf{businessId} In: Path, Type: integer. Id of business from which tax information will be taken\\
-\hspace*{3em}\textbf{id} In: Path, Type: integer. Id of tax which information will be taken\\
-\hspace*{2em}Responses:\\
-\hspace*{3em}\textbf{200} Successful operation. Response body:
-\begin{verbatim}
-        {
-          "id": 4,
-          "businessId": 5,
-          "name": "Sales Tax",
-          "rate": 15
-        }
-\end{verbatim}
-\hspace*{3em}\textbf{400} Invalid input\\
-\hspace*{3em}\textbf{404} Tax not found
+\textbf{PriceModifier:}\\
+\hspace*{1em}\textbf{ } /\\
+\hspace*{2em}Description: 
 
 \subsection{HTTP responses}
 \hspace*{1em}200 Ok\\
