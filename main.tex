@@ -230,6 +230,10 @@ The diagram in Fig. \ref{fig:data_model} shows the main entities within our data
     \item \textbf{ItemOption:} An item specific additional option (Almond milk on coffee). The price modifier will be a flat value which can either be negative or positive in order to indicate wether the item price will be reduced or increased by the set value, or unmodified if set to 0.
     \item \textbf{ItemOptionInventory:} A separate table (although can me combined with ItemOption) to \textbf{OPTIONALLY} track item inventory in the system. If a row does not exist for a specific ItemOption that means the ItemOptions's quantity is not being tracked.
     \item \textbf{ItemOptionLink:} Used to add item options to an item in a specific order. Item options can only be assigned/removed to/from an order if the order is not in a final state (Confirmed, Completed, Refunded, etc.).
+    \item \textbf{Tag:} Tags are a business specific way to categorize Items, ItemOptions and Services. They are mainly used to query the aforementioned entities.
+    \item \textbf{ItemTagLink:} Relation for Items and Tags.
+    \item \textbf{ItemOptionTagLink:} Relation for ItemOptions and Tags.
+    \item \textbf{SericeTagLink:} Relation for Services and Tags.
     \item \textbf{PriceModifier:} Entity for handling discounts and taxes. The modifier type will be used to identify wether the modifier is a \textbf{flat} discount/tax or a \textbf{percentage} based one. The identifier will advise on how we should use the value to calculate the final price of an item/reservation.
     \item \textbf{PriceModifierOrderLink:} Used to add a discount/tax o a specific item in a specific order.
     \item \textbf{PriceModifierReservationLink:} Used to add a discount/tax o a specific item in a specific reservation.
@@ -243,7 +247,10 @@ The diagram in Fig. \ref{fig:data_model} shows the main entities within our data
 \end{itemize}
 
 \section{API Contracts}
+
 \subsection{HTTP requests}
+
+All detailed API specifications are available in the Swagger yaml file.
 
 \textbf{Account:}\\
 \hspace*{1em}\textbf{POST} /account\\
@@ -349,16 +356,16 @@ The diagram in Fig. \ref{fig:data_model} shows the main entities within our data
 \hspace*{2em}Description: Get order by id
 
 \hspace*{1em}\textbf{PUT} /\\
-\hspace*{2em}Description: 
+\hspace*{2em}Description: Update order details (status, etc.)
 
 \hspace*{1em}\textbf{POST} /\\
-\hspace*{2em}Description: 
+\hspace*{2em}Description: Add an item to an existing order
 
 \hspace*{1em}\textbf{GET} /\\
-\hspace*{2em}Description: 
+\hspace*{2em}Description: Get all items in an order
 
 \hspace*{1em}\textbf{PUT} /\\
-\hspace*{2em}Description: 
+\hspace*{2em}Description: Update an item in an order
 
 \hspace*{1em}\textbf{DELETE} /\\
 \hspace*{2em}Description: 
