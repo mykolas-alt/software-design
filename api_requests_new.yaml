@@ -1760,6 +1760,15 @@ components:
         name:
           type: string
           example: "Bakery"
+        phone:
+          type: string
+          example: "+37060012345"
+        email:
+          type: string
+          example: "info@bakery.com"
+        address:
+          type: string
+          example: "123 Main Street, Vilnius, LT-01234"
         type:
           type: string
           enum:
@@ -1780,6 +1789,10 @@ components:
           type: number
           format: double
           example: 14.59
+        quantityInStock:
+          type: integer
+          example: 10
+          description: Optional inventory tracking quantity
     ItemInfo:
       type: object
       properties:
@@ -1796,6 +1809,10 @@ components:
           type: number
           format: double
           example: 14.59
+        quantityInStock:
+          type: integer
+          example: 10
+          description: Optional inventory tracking quantity, only returned for tracked items
     ItemOption:
       type: object
       properties:
@@ -1807,6 +1824,10 @@ components:
           format: double
           example: 1.00
           description: Amount to modify the item price (positive for increase, negative for decrease, zero for no change)
+        quantityInStock:
+          type: integer
+          example: 20
+          description: Optional inventory tracking quantity
     OrderUpdate:
       type: object
       properties:
@@ -1826,6 +1847,15 @@ components:
           type: number
           format: double
           example: 2.00
+        customer:
+          type: string
+          example: "John Doe"
+        customerEmail:
+          type: string
+          example: "john.doe@example.com"
+        customerPhone:
+          type: string
+          example: "+37060054321"
     Order:
       type: object
       properties:
@@ -1846,6 +1876,15 @@ components:
           type: number
           format: double
           example: 2.00
+        customer:
+          type: string
+          example: "John Doe"
+        customerEmail:
+          type: string
+          example: "john.doe@example.com"
+        customerPhone:
+          type: string
+          example: "+37060054321"
     OrderInfo:
       type: object
       properties:
@@ -1882,6 +1921,15 @@ components:
           type: number
           format: double
           example: 30.59
+        customer:
+          type: string
+          example: "John Doe"
+        customerEmail:
+          type: string
+          example: "john.doe@example.com"
+        customerPhone:
+          type: string
+          example: "+37060054321"
     OrderItem:
       type: object
       properties:
@@ -1985,6 +2033,12 @@ components:
         customer:
           type: string
           example: "John Doe"
+        customerEmail:
+          type: string
+          example: "john.doe@example.com"
+        customerPhone:
+          type: string
+          example: "+37060054321"
     ReservationInfo:
       type: object
       properties:
@@ -2029,6 +2083,12 @@ components:
         customer:
           type: string
           example: "John Doe"
+        customerEmail:
+          type: string
+          example: "john.doe@example.com"
+        customerPhone:
+          type: string
+          example: "+37060054321"
         totalAmount:
           type: number
           format: double
@@ -2134,5 +2194,3 @@ components:
           type: string
           format: date-time
           example: "2024-01-15T10:35:00Z"
-
-
