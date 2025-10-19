@@ -61,7 +61,10 @@ This document provides detailed documentation of a Point of Sale (POS) system de
 \subsection{Practical business flow examples}
 To start of with building a POS system, practical examples as to the possible business flows are required.
 
+\subsubsection{Restaurant Order Business Flow}
+The restaurant order flow (Figure \ref{figures:sequence_restaurant}) illustrates the customer experience within a restaurant setting. The waiter uses the POS system to confirm reservations, check for available tables, marking the tables occupied. All the orders are being registered through the POS system, which also sends order information to the kitchen staff.
 
+Once meals are ready, the POS system notifies the waiter to deliver the food to the customer. The system also accommodates additional orders during the visit. At checkout, the POS system generates an itemized receipt, supports split billing, registers payments and records tips. The order then is finalized and marked as complete. 
 
 % pridėti pavadinimus 
 A practical example involving a walk-in customer order:
@@ -74,8 +77,11 @@ A practical example involving a walk-in customer order:
 \end{figure}
 % \includepdf[pages=-,scale=0.95]{graphics/restaurant.png}
 
+\subsubsection{Beauty Salon Appointment Business Flow}
 
-This restaurant order flow illustrates the customer experience within a restaurant setting. The waiter can use 
+The beauty salon appointment flow (Figure \ref{figures:sequence_beauty_salon}) focuses on how client appointments are handled with the POS system. The receptionist creates or updates the appointment in the POS system at the request of a client. These appointments send confirmation messages via an SMS service. Once the client has arrived, the reservation is checked and order for the services created. Walk-in clients can also select their desired service and time slot based on available options. 
+
+After such services are completed, payment process is initiated - the POS system generates an itemized receipt, applies discounts if available, registers tips, processes payment and marks the order as complete.
 
 An example of a beauty salon appointment:
 
@@ -86,6 +92,11 @@ An example of a beauty salon appointment:
     \label{figures:sequence_beauty_salon}
 \end{figure}
 
+
+\subsubsection{Business Owner Management Business Flow}
+
+The business owner business flow (Figure \ref{figures:sequence_business_owner}) depics how business owners interact with the POS system to manage their business operations. After logging in, owners access the management dashboard to handle administrative tasks such as managing inventory, taxes, discounts and more. Additionally, owners can manage user accounts, update business details. 
+SuperAdmin intervention is also supported, allowing oversight and configuration when necessary. 
 
 An example of a business owner configuring the system:
 
@@ -127,7 +138,7 @@ It is divided into three main functional packages: \textbf{Business Management},
 Each package encapsulates related responsibilities and can evolve independently. 
 The diagram provides a clear, business-oriented view of the system’s structure and how its major modules are organized.
 
-\subsection{2. Business Management Package}
+\subsection{Business Management Package}
 
 \begin{figure}[H]
     \centering
@@ -144,7 +155,7 @@ It is divided into two subpackages:
 \end{itemize}
 Together, they ensure that the POS system has accurate and up-to-date product and pricing information.
 
-\subsection{3. Account Management Package}
+\subsection{Account Management Package}
 
 \begin{figure}[H]
     \centering
@@ -157,7 +168,7 @@ The \textbf{Account Management} package covers user and role administration, inc
 It ensures secure access control and supports different user types (e.g., cashier, manager, admin). 
 This package provides the foundation for authentication and authorization across the system.
 
-\subsection{4. Order Management Package}
+\subsection{Order Management Package}
 
 \begin{figure}[H]
     \centering
