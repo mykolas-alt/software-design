@@ -250,100 +250,94 @@ The diagram in Fig. \ref{fig:data_model} shows the main entities within our data
 
 \subsection{HTTP requests}
 
-All detailed API specifications are available in the Swagger yaml file.
+All detailed API specifications are available in the Swagger yaml file. This file is located in the main GitHub repository of this project.
 
+\subsubsection{Account Management APIs}
 \textbf{Account:}\\
-\hspace*{1em}\textbf{POST} /account\\
-\hspace*{2em}Description: Create worker account
+% /account
+%     POST
+%     GET
+% 
+% /account/login
+%     POST
+\hspace*{1em}\textbf{/account}\\
+\hspace*{2em}\textbf{POST} Description: Create worker account\\
+\hspace*{2em}\textbf{GET} Description: Get all accounts (with pagination)\\
 
-\hspace*{1em}\textbf{GET} /account\\
-\hspace*{2em}Description: Get all accounts (with pagination)
+\hspace*{1em}\textbf{/account/login}\\
+\hspace*{2em}\textbf{POST} Description: Log in to account\\
 
-\hspace*{1em}\textbf{POST} /account/login\\
-\hspace*{2em}Description: Log in to account
+\hspace*{1em}\textbf{/account/\{id\}}\\
+\hspace*{2em}\textbf{GET} Description: Get account information\\
+\hspace*{2em}\textbf{DELETE} Description: Delete an account\\
 
-\hspace*{1em}\textbf{GET} /account/\{id\}\\
-\hspace*{2em}Description: Get account information
-
-\hspace*{1em}\textbf{DELETE} /account/\{id\}\\
-\hspace*{2em}Description: Delete an account
 
 \textbf{AccountRole:}\\
-\hspace*{1em}\textbf{POST} /account/role\\
-\hspace*{2em}Description: Create a new role for business
+\hspace*{1em}\textbf{/account/role}\\
+\hspace*{2em}\textbf{POST} Description: Create a new role for business\\
+\hspace*{2em}\textbf{GET} Description: Get all roles for current business\\
 
-\hspace*{1em}\textbf{GET} /account/role\\
-\hspace*{2em}Description: Get all roles for current business
+\hspace*{1em}\textbf{/account/role/\{roleId\}}\\
+\hspace*{2em}\textbf{GET} Description: Get details of a specific role\\
+\hspace*{2em}\textbf{PUT} Description: Update role details\\
+\hspace*{2em}\textbf{DELETE} Description: Delete a role\\
 
-\hspace*{1em}\textbf{GET} /account/role/\{roleId\}\\
-\hspace*{2em}Description: Get details of a specific role
+\hspace*{1em}\textbf{/account/role/\{roleId\}/function}\\
+\hspace*{2em}\textbf{POST} Description: Assign a function to a role with specified access level\\
+\hspace*{2em}\textbf{GET} Description: Get all functions assigned to a specific role\\
 
-\hspace*{1em}\textbf{PUT} /account/role/\{roleId\}\\
-\hspace*{2em}Description: Update role details
+\hspace*{1em}\textbf{/account/\{accountId\}/role}\\
+\hspace*{2em}\textbf{POST} Description: Assign a role to an account\\
+\hspace*{2em}\textbf{GET} Description: Get all roles assigned to an account\\
 
-\hspace*{1em}\textbf{DELETE} /account/role/\{roleId\}\\
-\hspace*{2em}Description: Delete a role
+\hspace*{1em}\textbf{/account/\{accountId\}/role/\{roleId\}}\\
+\hspace*{2em}\textbf{PUT} Description: Update the status of a role assigned to an account\\
 
-\hspace*{1em}\textbf{POST} /account/role/\{roleId\}/function\\
-\hspace*{2em}Description: Assign a function to a role with specified access level
 
-\hspace*{1em}\textbf{GET} /account/role/\{roleId\}/function\\
-\hspace*{2em}Description: Get all functions assigned to a specific role
-
-\hspace*{1em}\textbf{POST} /account/\{accountId\}/role\\
-\hspace*{2em}Description: Assign a role to an account
-
-\hspace*{1em}\textbf{GET} /account/\{accountId\}/role\\
-\hspace*{2em}Description: Get all roles assigned to an account
-
-\hspace*{1em}\textbf{PUT} /account/\{accountId\}/role/\{roleId\}\\
-\hspace*{2em}Description: Update the status of a role assigned to an account
+\subsubsection{Function API}\\
 
 \textbf{Function:}\\
-\hspace*{1em}\textbf{GET} /function\\
-\hspace*{2em}Description: Get all available system functions
+\hspace*{1em}\textbf{/function}\\
+\hspace*{2em}\textbf{GET} Description: Get all available system functions\\
+
+
+\subsubsection{Business Management APIs}\\
 
 \textbf{Business:}\\
-\hspace*{1em}\textbf{POST} /business\\
-\hspace*{2em}Description: Create business
+\hspace*{1em}\textbf{/business}\\
+\hspace*{2em}\textbf{POST} Description: Create business\\
+\hspace*{2em}\textbf{GET} Description: Get all businesses user has access to\\
 
-\hspace*{1em}\textbf{GET} /business\\
-\hspace*{2em}Description: Get all businesses user has access to
-
-\hspace*{1em}\textbf{GET} /business/\{id\}\\
-\hspace*{2em}Description: Get business information
+\hspace*{1em}\textbf{/business/\{id\}}\\
+\hspace*{2em}\textbf{GET} Description: Get business information\\
 
 \textbf{Item:}\\
-\hspace*{1em}\textbf{POST} /item\\
-\hspace*{2em}Description: Create item for current business
+\hspace*{1em}\textbf{/item}\\
+\hspace*{2em}\textbf{POST} Description: Create item for current business\\
+\hspace*{2em}\textbf{GET} Description: Get all items of current business\\
 
-\hspace*{1em}\textbf{GET} /item\\
-\hspace*{2em}Description: Get all items of current business
-
-\hspace*{1em}\textbf{GET} /item/\{id\}\\
-\hspace*{2em}Description: Get item by id
-
-\hspace*{1em}\textbf{PUT} /item/\{id\}\\
-\hspace*{2em}Description: Edit item
-
-\hspace*{1em}\textbf{DELETE} /item/\{id\}\\
-\hspace*{2em}Description: Delete an item
+\hspace*{1em}\textbf{/item/\{id\}}\\
+\hspace*{2em}\textbf{GET} Description: Get item by id\\
+\hspace*{2em}\textbf{PUT} Description: Edit item\\
+\hspace*{2em}\textbf{DELETE} Description: Delete an item\\
 
 \textbf{ItemOption:}\\
-\hspace*{1em}\textbf{POST} /item-option\\
-\hspace*{2em}Description: Create a new item option
+\hspace*{1em}\textbf{/item-option}\\
+\hspace*{2em}\textbf{POST} Description: Create a new item option\\
+\hspace*{2em}\textbf{GET} Description: Get all item options\\
 
-\hspace*{1em}\textbf{GET} /item-option\\
-\hspace*{2em}Description: Get all item options
+\hspace*{1em}\textbf{/item-option/\{id\}}\\
+\hspace*{2em}\textbf{GET} Description: Get item option by id\\
+\hspace*{2em}\textbf{PUT} Description: Update an item option\\
+\hspace*{2em}\textbf{DELETE} Description: Delete an item option\\
 
-\hspace*{1em}\textbf{GET} /item-option/\{id\}\\
-\hspace*{2em}Description: Get item option by id
 
-\hspace*{1em}\textbf{PUT} /item-option/\{id\}\\
-\hspace*{2em}Description: Update an item option
 
-\hspace*{1em}\textbf{DELETE} /item-option/\{id\}\\
-\hspace*{2em}Description: Delete an item option
+\textbf{PriceModifier:}\\
+\hspace*{1em}\textbf{ } /\\
+\hspace*{2em}Description: 
+
+\subsubsection{Order Management APIs}
 
 \textbf{Order:}\\
 \hspace*{1em}\textbf{POST} /\\
@@ -390,13 +384,12 @@ All detailed API specifications are available in the Swagger yaml file.
 \hspace*{1em}\textbf{ } /\\
 \hspace*{2em}Description: 
 
+\subsubsection{Payment API}
+
 \textbf{Payment:}\\
 \hspace*{1em}\textbf{ } /\\
 \hspace*{2em}Description: 
 
-\textbf{PriceModifier:}\\
-\hspace*{1em}\textbf{ } /\\
-\hspace*{2em}Description: 
 
 \subsection{HTTP responses}
 \hspace*{1em}200 Ok\\
