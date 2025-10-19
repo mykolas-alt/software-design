@@ -123,6 +123,27 @@ paths:
           description: Insufficient permissions
         '404':
           description: Account not found
+    delete:
+      tags:
+        - Account
+      summary: Delete account
+      security:
+        - bearerAuth: []
+      description: Delete an account
+      parameters:
+        - name: id
+          in: path
+          description: ID of account to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: Account not found
           
   # Account Role Management
   /account/role:
@@ -227,6 +248,27 @@ paths:
           description: Successfully updated
         '400':
           description: Invalid input
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: Role not found
+    delete:
+      tags:
+        - AccountRole
+      summary: Delete role
+      security:
+        - bearerAuth: []
+      description: Delete a role
+      parameters:
+        - name: roleId
+          in: path
+          description: ID of the role to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted
         '403':
           description: Insufficient permissions
         '404':
@@ -601,6 +643,27 @@ paths:
           description: Insufficient permissions
         '404':
           description: Item not found
+    delete:
+      tags:
+        - Item
+      summary: Delete item
+      security:
+        - bearerAuth: []
+      description: Delete an item
+      parameters:
+        - name: id
+          in: path
+          description: ID of item to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: Item not found
           
   # Item Option Management
   /item-option:
@@ -709,6 +772,27 @@ paths:
           description: Insufficient permissions
         '404':
           description: Item option not found
+    delete:
+      tags:
+        - ItemOption
+      summary: Delete item option
+      security:
+        - bearerAuth: []
+      description: Delete an item option
+      parameters:
+        - name: id
+          in: path
+          description: ID of item option to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: Item option not found
           
   # Order Management
   /order:
@@ -763,9 +847,8 @@ paths:
             type: string
             enum:
               - Open
-              - Closed
+              - Cancelled
               - Paid
-              - Confirmed
               - Completed
               - Refunded
       responses:
@@ -954,6 +1037,36 @@ paths:
           description: Insufficient permissions or order in final state
         '404':
           description: Order or item not found
+  
+  /order/{orderId}/price-modifier:
+    post:
+      tags:
+        - Order
+      summary: Apply price modifier to order
+      security:
+        - bearerAuth: []
+      description: Apply a price modifier to an order with optional items
+      parameters:
+        - name: orderId
+          in: path
+          description: ID of order
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriceModifierOrderLink'
+      responses:
+        '201':
+          description: Successfully applied
+        '400':
+          description: Invalid input
+        '403':
+          description: Insufficient permissions or order in final state
+        '404':
+          description: Order or price modifier not found
 
   /order/{orderId}/item/{itemId}/option:
     post:
@@ -1166,6 +1279,27 @@ paths:
           description: Insufficient permissions
         '404':
           description: Service not found
+    delete:
+      tags:
+        - Service
+      summary: Delete service
+      security:
+        - bearerAuth: []
+      description: Delete a service
+      parameters:
+        - name: id
+          in: path
+          description: ID of service to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: Service not found
           
   # Reservation Management
   /reservation:
@@ -1216,9 +1350,8 @@ paths:
             type: string
             enum:
               - Open
-              - Closed
+              - Cancelled
               - Paid
-              - Confirmed
               - Completed
               - Refunded
       responses:
@@ -1287,6 +1420,36 @@ paths:
           description: Insufficient permissions
         '404':
           description: Reservation not found
+          
+  /reservation/{reservationId}/price-modifier:
+    post:
+      tags:
+        - Reservation
+      summary: Apply price modifier to reservation
+      security:
+        - bearerAuth: []
+      description: Apply a price modifier to a reservation
+      parameters:
+        - name: reservationId
+          in: path
+          description: ID of reservation
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriceModifierReservationLink'
+      responses:
+        '201':
+          description: Successfully applied
+        '400':
+          description: Invalid input
+        '403':
+          description: Insufficient permissions or reservation in final state
+        '404':
+          description: Reservation or price modifier not found
           
   # Payment Management
   /payment:
@@ -1473,66 +1636,27 @@ paths:
           description: Insufficient permissions
         '404':
           description: Price modifier not found
-          
-  /order/{orderId}/price-modifier:
-    post:
+    delete:
       tags:
         - PriceModifier
-      summary: Apply price modifier to order
+      summary: Delete price modifier
       security:
         - bearerAuth: []
-      description: Apply a price modifier to an order
+      description: Delete a price modifier
       parameters:
-        - name: orderId
+        - name: id
           in: path
-          description: ID of order
+          description: ID of price modifier to delete
           required: true
           schema:
             type: integer
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PriceModifierOrderLink'
       responses:
-        '201':
-          description: Successfully applied
-        '400':
-          description: Invalid input
+        '200':
+          description: Successfully deleted
         '403':
-          description: Insufficient permissions or order in final state
+          description: Insufficient permissions
         '404':
-          description: Order or price modifier not found
-          
-  /reservation/{reservationId}/price-modifier:
-    post:
-      tags:
-        - PriceModifier
-      summary: Apply price modifier to reservation
-      security:
-        - bearerAuth: []
-      description: Apply a price modifier to a reservation
-      parameters:
-        - name: reservationId
-          in: path
-          description: ID of reservation
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PriceModifierReservationLink'
-      responses:
-        '201':
-          description: Successfully applied
-        '400':
-          description: Invalid input
-        '403':
-          description: Insufficient permissions or reservation in final state
-        '404':
-          description: Reservation or price modifier not found
+          description: Price modifier not found
 
 components:
   securitySchemes:
@@ -1690,9 +1814,8 @@ components:
           type: string
           enum:
             - Open
-            - Closed
+            - Cancelled
             - Paid
-            - Confirmed
             - Completed
             - Refunded
         tipAmount:
@@ -1710,9 +1833,8 @@ components:
           type: string
           enum:
             - Open
-            - Closed
+            - Cancelled
             - Paid
-            - Confirmed
             - Completed
             - Refunded
           example: "Open"
@@ -1744,9 +1866,8 @@ components:
           type: string
           enum:
             - Open
-            - Closed
+            - Cancelled
             - Paid
-            - Confirmed
             - Completed
             - Refunded
         tipAmount:
@@ -1850,9 +1971,8 @@ components:
           type: string
           enum:
             - Open
-            - Closed
+            - Cancelled
             - Paid
-            - Confirmed
             - Completed
             - Refunded
         tipAmount:
@@ -1895,9 +2015,8 @@ components:
           type: string
           enum:
             - Open
-            - Closed
+            - Cancelled
             - Paid
-            - Confirmed
             - Completed
             - Refunded
         tipAmount:
@@ -1965,10 +2084,12 @@ components:
         modifierId:
           type: integer
           example: 1
-        itemId:
-          type: integer
-          example: 3
-          description: Optional - if specified, applies only to this item
+        itemIds:
+          type: array
+          description: Optional - if specified, applies only to these items
+          items:
+            type: integer
+            example: 3
     PriceModifierReservationLink:
       type: object
       properties:
@@ -2013,4 +2134,5 @@ components:
           type: string
           format: date-time
           example: "2024-01-15T10:35:00Z"
+
 
