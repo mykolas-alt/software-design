@@ -577,6 +577,20 @@ paths:
           required: false
           schema:
             type: integer
+        - name: name
+          in: query
+          description: Filter by item name (partial match)
+          required: false
+          schema:
+            type: string
+        - name: tags
+          in: query
+          description: Filter by tags (items containing all specified tags)
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: Successful operation
@@ -664,6 +678,92 @@ paths:
           description: Insufficient permissions
         '404':
           description: Item not found
+
+  /item/{id}/tag:
+    get:
+      tags:
+        - Item
+      summary: Get item tags
+      security:
+        - bearerAuth: []
+      description: List tags assigned to an item
+      parameters:
+        - name: id
+          in: path
+          description: ID of item
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: Item not found
+    post:
+      tags:
+        - Item
+      summary: Add tag to item
+      security:
+        - bearerAuth: []
+      description: Assign an existing tag to an item
+      parameters:
+        - name: id
+          in: path
+          description: ID of item
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagCreate'
+      responses:
+        '201':
+          description: Successfully added
+        '400':
+          description: Invalid input
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: Item not found
+
+  /item/{id}/tag/{tag}:
+    delete:
+      tags:
+        - Item
+      summary: Remove tag from item
+      security:
+        - bearerAuth: []
+      description: Remove a tag from an item
+      parameters:
+        - name: id
+          in: path
+          description: ID of item
+          required: true
+          schema:
+            type: integer
+        - name: tag
+          in: path
+          description: Tag value to remove
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully removed
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: Item or tag not found
           
   # Item Option Management
   /item-option:
@@ -706,6 +806,20 @@ paths:
           required: false
           schema:
             type: integer
+        - name: name
+          in: query
+          description: Filter by item option name (partial match)
+          required: false
+          schema:
+            type: string
+        - name: tags
+          in: query
+          description: Filter by tags (options containing all specified tags)
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: Successful operation
@@ -793,6 +907,92 @@ paths:
           description: Insufficient permissions
         '404':
           description: Item option not found
+
+  /item-option/{id}/tag:
+    get:
+      tags:
+        - ItemOption
+      summary: Get item option tags
+      security:
+        - bearerAuth: []
+      description: List tags assigned to an item option
+      parameters:
+        - name: id
+          in: path
+          description: ID of item option
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: Item option not found
+    post:
+      tags:
+        - ItemOption
+      summary: Add tag to item option
+      security:
+        - bearerAuth: []
+      description: Assign an existing tag to an item option
+      parameters:
+        - name: id
+          in: path
+          description: ID of item option
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagCreate'
+      responses:
+        '201':
+          description: Successfully added
+        '400':
+          description: Invalid input
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: Item option not found
+
+  /item-option/{id}/tag/{tag}:
+    delete:
+      tags:
+        - ItemOption
+      summary: Remove tag from item option
+      security:
+        - bearerAuth: []
+      description: Remove a tag from an item option
+      parameters:
+        - name: id
+          in: path
+          description: ID of item option
+          required: true
+          schema:
+            type: integer
+        - name: tag
+          in: path
+          description: Tag value to remove
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully removed
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: Item option or tag not found
           
   # Order Management
   /order:
@@ -1213,6 +1413,20 @@ paths:
           required: false
           schema:
             type: integer
+        - name: name
+          in: query
+          description: Filter by service name (partial match)
+          required: false
+          schema:
+            type: string
+        - name: tags
+          in: query
+          description: Filter by tags (services containing all specified tags)
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: Successful operation
@@ -1300,6 +1514,92 @@ paths:
           description: Insufficient permissions
         '404':
           description: Service not found
+
+  /service/{id}/tag:
+    get:
+      tags:
+        - Service
+      summary: Get service tags
+      security:
+        - bearerAuth: []
+      description: List tags assigned to a service
+      parameters:
+        - name: id
+          in: path
+          description: ID of service
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: Service not found
+    post:
+      tags:
+        - Service
+      summary: Add tag to service
+      security:
+        - bearerAuth: []
+      description: Assign an existing tag to a service
+      parameters:
+        - name: id
+          in: path
+          description: ID of service
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagCreate'
+      responses:
+        '201':
+          description: Successfully added
+        '400':
+          description: Invalid input
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: Service not found
+
+  /service/{id}/tag/{tag}:
+    delete:
+      tags:
+        - Service
+      summary: Remove tag from service
+      security:
+        - bearerAuth: []
+      description: Remove a tag from a service
+      parameters:
+        - name: id
+          in: path
+          description: ID of service
+          required: true
+          schema:
+            type: integer
+        - name: tag
+          in: path
+          description: Tag value to remove
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully removed
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: Service or tag not found
           
   # Reservation Management
   /reservation:
@@ -1658,6 +1958,141 @@ paths:
         '404':
           description: Price modifier not found
 
+  # Tag Management
+  /tag:
+    post:
+      tags:
+        - Tag
+      summary: Create tag
+      security:
+        - bearerAuth: []
+      description: Create a new tag
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagCreate'
+      responses:
+        '201':
+          description: Successfully created
+        '400':
+          description: Invalid input
+        '403':
+          description: Insufficient permissions
+    get:
+      tags:
+        - Tag
+      summary: Get tags
+      security:
+        - bearerAuth: []
+      description: Get all tags
+      parameters:
+        - name: page
+          in: query
+          description: Page number for pagination
+          required: false
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          description: Page size for pagination
+          required: false
+          schema:
+            type: integer
+        - name: tag
+          in: query
+          description: Filter by tag value (partial match)
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+        '403':
+          description: Insufficient permissions
+
+  /tag/{id}:
+    get:
+      tags:
+        - Tag
+      summary: Get tag
+      security:
+        - bearerAuth: []
+      description: Get tag by id
+      parameters:
+        - name: id
+          in: path
+          description: ID of tag
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: Tag not found
+    put:
+      tags:
+        - Tag
+      summary: Update tag
+      security:
+        - bearerAuth: []
+      description: Rename/update a tag
+      parameters:
+        - name: id
+          in: path
+          description: ID of tag
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagUpdate'
+      responses:
+        '200':
+          description: Successfully updated
+        '400':
+          description: Invalid input
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: Tag not found
+    delete:
+      tags:
+        - Tag
+      summary: Delete tag
+      security:
+        - bearerAuth: []
+      description: Delete a tag
+      parameters:
+        - name: id
+          in: path
+          description: ID of tag
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: Tag not found
+
 components:
   securitySchemes:
     bearerAuth:
@@ -1793,6 +2228,11 @@ components:
           type: integer
           example: 10
           description: Optional inventory tracking quantity
+        tags:
+          type: array
+          items:
+            type: string
+          description: Optional list of tags to categorize the item
     ItemInfo:
       type: object
       properties:
@@ -1813,6 +2253,11 @@ components:
           type: integer
           example: 10
           description: Optional inventory tracking quantity, only returned for tracked items
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags assigned to the item
     ItemOption:
       type: object
       properties:
@@ -1828,6 +2273,11 @@ components:
           type: integer
           example: 20
           description: Optional inventory tracking quantity
+        tags:
+          type: array
+          items:
+            type: string
+          description: Optional list of tags to categorize the item option
     OrderUpdate:
       type: object
       properties:
@@ -1978,6 +2428,11 @@ components:
           type: integer
           example: 5
           description: ID of the worker who performs this service
+        tags:
+          type: array
+          items:
+            type: string
+          description: Optional list of tags to categorize the service
     ServiceInfo:
       type: object
       properties:
@@ -2001,6 +2456,11 @@ components:
         workerId:
           type: integer
           example: 5
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags assigned to the service
     Reservation:
       type: object
       properties:
@@ -2159,6 +2619,27 @@ components:
         modifierId:
           type: integer
           example: 1
+    Tag:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 7
+        tag:
+          type: string
+          example: "vegan"
+    TagCreate:
+      type: object
+      properties:
+        tag:
+          type: string
+          example: "vegan"
+    TagUpdate:
+      type: object
+      properties:
+        tag:
+          type: string
+          example: "plant-based"
     Payment:
       type: object
       properties:
