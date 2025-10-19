@@ -152,21 +152,11 @@ paths:
       security:
         - bearerAuth: []
       description: Create business
-      parameters:
-        - name: name
-          in: query
-          description: Name of business that will be created
-          required: true
-          schema:
-            type: string
-        - name: type
-          in: query
-          description: Type of business. catering/beauty
-          required: true
-          schema:
-            enum:
-              - catering
-              - beauty
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Business'
       responses:
         '201':
           description: Successfully created
@@ -193,7 +183,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Business'
+                $ref: '#/components/schemas/BusinessInfo'
         '400':
           description: Invalid input
   /{businessId}/business/{id}:
@@ -1082,12 +1072,48 @@ components:
     Business:
       type: object
       properties:
+        name:
+          type: string
+          example: Bakery
+        ownerId:
+          type: integer
+          example: 10
+        type:
+          type: string
+          example: catering
+        address:
+          type: string
+          example: "123 Main St, Cityville"
+        phone:
+          type: string
+          example: "+1-555-1234"
+        email:
+          type: string
+          example: "jonhdoe@gmail.com"
+    BusinessInfo:
+      type: object
+      properties:
         id:
           type: integer
           example: 4
         name:
           type: string
           example: Bakery
+        ownerId:
+          type: integer
+          example: 10
+        type:
+          type: string
+          example: catering
+        address:
+          type: string
+          example: "123 Main St, Cityville"
+        phone:
+          type: string
+          example: "+1-555-1234"
+        email:
+          type: string
+          example: "jonhdoe@gmail.com"
     Item:
       type: object
       properties:

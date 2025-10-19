@@ -61,6 +61,8 @@ This document provides detailed documentation of a Point of Sale (POS) system de
 \subsection{Practical business flow examples}
 To start of with building a POS system, practical examples as to the possible business flows are required.
 
+
+
 % pridėti pavadinimus 
 A practical example involving a walk-in customer order:
 
@@ -72,6 +74,8 @@ A practical example involving a walk-in customer order:
 \end{figure}
 % \includepdf[pages=-,scale=0.95]{graphics/restaurant.png}
 
+
+This restaurant order flow illustrates the customer experience within a restaurant setting. The waiter can use 
 
 An example of a beauty salon appointment:
 
@@ -91,6 +95,8 @@ An example of a business owner configuring the system:
     \caption{Sequence diagram displaying possible business owner management actions}
     \label{figures:sequence_business_owner}
 \end{figure}
+
+
 
 
 \section{UI wireframes}
@@ -299,6 +305,17 @@ The diagram in Fig. \ref{fig:data_model} shows the main entities within our data
 \hspace*{2em}Parameters:\\
 \hspace*{3em}\textbf{name} In: Query, Type: string. Name of business that will be created\\
 \hspace*{3em}\textbf{type} In: Query, Type: enum. Type of business. catering/beauty\\
+\hspace*{2em}Request body:
+\begin{verbatim}
+        {
+          "name": "Bakery",
+          "ownerId": 10,
+          "type": "catering",
+          "address": "123 Main St, Cityville",
+          "phone": "+1-555-1234",
+          "email": "jonhdoe@gmail.com"
+        }
+\end{verbatim}
 \hspace*{2em}Responses:\\
 \hspace*{3em}\textbf{201} Successfully created\\
 \hspace*{3em}\textbf{400} Invalid input
@@ -312,7 +329,12 @@ The diagram in Fig. \ref{fig:data_model} shows the main entities within our data
 \begin{verbatim}
         {
           "id": 4,
-          "name": "Bakery"
+          "name": "Bakery",
+          "ownerId": 10,
+          "type": "catering",
+          "address": "123 Main St, Cityville",
+          "phone": "+1-555-1234",
+          "email": "jonhdoe@gmail.com"
         }
 \end{verbatim}
 \hspace*{3em}\textbf{400} Invalid input
