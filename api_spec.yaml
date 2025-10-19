@@ -1371,6 +1371,28 @@ paths:
           description: Insufficient permissions or order in final state
         '404':
           description: Order, item or option not found
+  /order/{id}/refund:
+    post:
+      tags:
+        - Order
+      summary: Refund order
+      description: Refund the specified order
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of order to refund
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Refund processed
+        '400':
+          description: Invalid request
+        '404':
+          description: Order not found
           
   # Service Management
   /service:
@@ -1750,6 +1772,28 @@ paths:
           description: Insufficient permissions or reservation in final state
         '404':
           description: Reservation or price modifier not found
+  /reservation/{id}/refund:
+    post:
+      tags:
+        - Reservation
+      summary: Refund reservation
+      description: Refund the specified reservation
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of reservation to refund
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Refund processed
+        '400':
+          description: Invalid request
+        '404':
+          description: Reservation not found
           
   # Payment Management
   /payment:
@@ -2239,9 +2283,6 @@ components:
         id:
           type: integer
           example: 2
-        businessId:
-          type: integer
-          example: 6
         name:
           type: string
           example: "Cake"
@@ -2261,6 +2302,9 @@ components:
     ItemOption:
       type: object
       properties:
+        identItem:
+          type: integer
+          example: 6
         name:
           type: string
           example: "cream"
@@ -2309,15 +2353,6 @@ components:
     Order:
       type: object
       properties:
-        status:
-          type: string
-          enum:
-            - Open
-            - Cancelled
-            - Paid
-            - Completed
-            - Refunded
-          example: "Open"
         tipAmount:
           type: number
           format: double
