@@ -2,6 +2,7 @@
 
 Team name: Fantastic Five
 Team leader: Mykolas Budrys
+Selected language: Java
 Describe how the team elected it's leader and why it was done that way: Democratic vote
 What responsibilities does the team leader will have:
     Organizing meetings, delegating tasks, ensuring deadlines are met

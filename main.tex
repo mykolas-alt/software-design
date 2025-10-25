@@ -297,8 +297,13 @@ The diagram in Fig. \ref{fig:data_model} shows the main entities within our data
 
 \begin{itemize}
     \item \textbf{AccountRole:} Main entity for authorization. Account roles can be created or modified by business owners. Business owners will always have the role BusinessOwner assigned. The created roles can be assigned functions (Order creation, order view, etc.) which are mapped to specific functionalities within the system. Account roles will be used when looking up wether the executing user can execute a certain function.
-    \item \textbf{Function:} These represent the functions within the system.
-    \item \textbf{AccountRoleFunctionLink:} Used to assign specific functions to a specific role and a access level (view initiate) for that function.
+    \item \textbf{Function:} These represent the functions within the system:
+    \begin{itemize}
+        \item \textbf{Order} allows a user to create/modify/refund/view an order
+        \item \textbf{Item} allows a user to create/modify/delete/view an item
+        \item $\vdots$
+    \end{itemize}
+    \item \textbf{AccountRoleFunctionLink:} Used to assign specific functions to a specific role and a access level (view, initiate) for that function.
     \item \textbf{Account:} Account for a user of the system. The identBusiness field may only be unset (0) when an account is created to register a new business. Accounts created for a specific business will always have a business identifier set.
     \item \textbf{AccountRoleLink:} Used to configure Account - AccountRole relationships. Will have a possible status of: 
     \begin{itemize}
