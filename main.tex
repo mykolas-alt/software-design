@@ -61,7 +61,7 @@ This document provides detailed documentation of a Point of Sale (POS) system de
 
 \section{Business flows}
 \subsection{Practical business flow examples}
-To start of with building a POS system, practical examples as to the possible business flows are required.
+To start off with building a POS system, practical examples as to the possible business flows are required.
 
 \subsubsection{Restaurant Order Business Flow}
 The restaurant order flow (Figure \ref{figures:sequence_restaurant}) illustrates the customer experience within a restaurant setting. The waiter uses the POS system to confirm reservations, check for available tables, and mark occupied tables. All orders are registered through the POS system, which also sends order information to the kitchen staff.
@@ -113,30 +113,112 @@ An example of a business owner configuring the system:
 
 
 \section{UI wireframes}
-To better visualize how the system would look, we can make wireframes. Wireframes can also help to figure out what APIs we need.
+To better visualize how the system would look, we can create wireframes. Wireframes can also help to figure out what APIs are needed.
+
+\subsection{Wireframes for restaurant orders}
+
+\subsubsection{Main order page}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{ProductSelection.png}
-    \caption{A wireframe showing the selection of products when creating an order}
-    \label{fig:wireframe_product_selection}
+    \includegraphics[width=1\linewidth]{wireframes/MainOrderPage.png}
+    \caption{A wireframe for the main order page showing all orders}
+    \label{fig:wireframe_main_order_page}
 \end{figure}
 
-The wireframe in Figure \ref{fig:wireframe_product_selection} shows the product selection page for order creation. The user can search for dishes by selecting the category (soups, drinks, etc.) and choosing one of the displayed items. It is also possible to search for dishes by typing in at least a part of the name of the wanted item. The selected items show up in the order information section along with the quantity selected and price. At the bottom of the order information section the subtotal and total of the whole order are displayed. Below there is a button \enquote{Pay now} that lets the user proceed to the payment for this order.
+The wireframe in Figure \ref{fig:wireframe_main_order_page} shows recent orders. Each order has a table associated with it to help restaurant employees find the needed order quicker along with the date and time the specific order was created and the status of the order. Orders that have been paid can be refunded. By clicking a not closed order, the user can go to the order editing page shown in Figure \ref{fig:wireframe_item_selection}.
 
+\subsubsection{Restaurant table page}
 
-\section{Package diagram}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{wireframes/TablePage.png}
+    \caption{A wireframe for a page with tables of the restaurant}
+    \label{fig:wireframe_table_page}
+\end{figure}
+
+Restaurant table information is shown in Figure \ref{fig:wireframe_table_page}. By clicking on a free table, the user can start creating an order for that table. After clicking on the table, the user is taken to the order editing page shown in Figure \ref{fig:wireframe_item_selection}. If the created order is not canceled, the table is marked as occupied. After an order is closed, the table associated with it becomes free.
+
+\subsubsection{Order editing page}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{wireframes/OrderItemSelection.png}
+    \caption{A wireframe showing the selection of items when creating an order as well as the order summary}
+    \label{fig:wireframe_item_selection}
+\end{figure}
+
+The wireframe in Figure \ref{fig:wireframe_item_selection} shows item selection for order creation or editing. The user can search for items by selecting the category (soups, drinks, etc.) and clicking on one of the displayed items. It is also possible to search for items by typing in at least a part of the name of the wanted item. The selected items show up in the order information section along with the quantity selected and price. There is a possibility to edit each item. At the bottom of the order information section the total of the whole order is displayed. Above the order information section are buttons for generating a single bill or split bills. Below the order information section are buttons for adding a discount and canceling the order.
+
+\subsubsection{Order item editing window}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{wireframes/OrderItemOptions.png}
+    \caption{A wireframe for order item editing window}
+    \label{fig:wireframe_item_options}
+\end{figure}
+
+Figure \ref{fig:wireframe_item_options} shows the order item editing window. The user can specify options for the chosen item, such as the type of milk to use for a latte. The quantity of the item can be reduced or increased. There are buttons for adding a discount to this specific item or removing the item from the order.
+
+\subsubsection{Generated bill window}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{wireframes/OrderBill.png}
+    \caption{A wireframe for the generated order bill window}
+    \label{fig:wireframe_order_bill}
+\end{figure}
+
+The order bill window shown in Figure \ref{fig:wireframe_order_bill} is opened after pressing the \enquote{Generate bill} button in the order editing page from Figure \ref{fig:wireframe_item_selection}. The generated bill contains the date and time of order creation, the ordered items, the subtotal, applied taxes, the total sum, the date and time of bill creation. The bill can also contain a tip, which can be added through the \enquote{TIP} button, and discounts that can be added to the order prior to generating a bill. The bill can be paid for by cash, credit or debit card and gift card.
+
+\subsubsection{Bill splitting window}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{wireframes/SplitOrderBill.png}
+    \caption{A wireframe showing bill splitting window}
+    \label{fig:wireframe_split_bill}
+\end{figure}
+
+Figure \ref{fig:wireframe_split_bill} shows a window with split bills that is opened when clicking the button \enquote{Generate split bill} in the order editing page from Figure \ref{fig:wireframe_item_selection}. Multiple bills can be created by pressing the \enquote{ADD BILL} button. Below the separate bills is a list of all ordered items along with the bills they belong to and the total of the whole order. A bill can be chosen by clicking on it. The chosen bill is marked and the user can click on ordered items to add them to the chosen bill. Items belonging to the chosen bill are also marked the same way as the bill. To add items to another bill, the user has to click on that bill first and then click on ordered items. After the ordered items are added to the bill, the user can start the payment process by clicking on the \enquote{PAY} button which takes the user to a bill window similar to the one in Figure \ref{fig:wireframe_order_bill}. After the bill is paid for, its status changes from \enquote{unpaid} to \enquote{paid}.
+
+\subsection{Wireframes for service reservation}
+
+\subsubsection{Reservation of services}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{wireframes/ServiceReservationInfo.png}
+    \caption{A wireframe showing the service reservation page}
+    \label{fig:wireframe_service_reservation}
+\end{figure}
+
+Figure \ref{fig:wireframe_service_reservation} shows the service reservation page. The user can enter client information and add services to the reservation by clicking the \enquote{ADD SERVICE} button. After the requested services are chosen and the information of the client is entered, the user can confirm the reservation by clicking the button \enquote{CONFIRM RESERVATION}. An unconfirmed reservation can be canceled anytime by clicking the \enquote{Cancel} button at the top right corner of the page.
+
+\subsubsection{Service time reservation}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{wireframes/ServiceReservationTime.png}
+    \caption{A wireframe showing the service time reservation page}
+    \label{fig:wireframe_service_time}
+\end{figure}
+
+The wireframe in Figure \ref{fig:wireframe_service_time} shows the service time page which opens after pressing the \enquote{ADD SERVICE} button in the service reservation page from Figure \ref{fig:wireframe_service_reservation}. The user can select a service and a specialist for that service. Then available times for that service and specialist appear and the user can choose a suitable time. Clicking the \enquote{CONTINUE} button takes the user back to the service reservation page from Figure \ref{fig:wireframe_service_reservation} and adds this service to the reservation. The user can exit the service time reservation window without adding a service to the reservation anytime by clicking the \enquote{Cancel} button.
+
+\section{Package diagrams}
 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{graphics/Package1.png}
+    \includegraphics[width=0.9\textwidth]{graphics/Package8.png}
     \caption{FlowPOS Main Package Diagram}
     \label{fig:package1}
 \end{figure}
 
 This top-level diagram represents the overall architecture of the FlowPOS system. 
-It is divided into three main functional packages: \textbf{Business Management}, \textbf{Account Management}, and \textbf{Order Management}. 
+It is divided into three main functional packages: \textbf{Business Management}, \textbf{Account Management}, and \textbf{Request Management}. 
 Each package encapsulates related responsibilities and can evolve independently. 
 The diagram provides a clear, business-oriented view of the system’s structure and how its major modules are organized.
 
@@ -144,7 +226,7 @@ The diagram provides a clear, business-oriented view of the system’s structure
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{graphics/Package2.png}
+    \includegraphics[width=0.9\textwidth]{graphics/Package13.png}
     \caption{Business Management Package}
     \label{fig:package2}
 \end{figure}
@@ -152,7 +234,7 @@ The diagram provides a clear, business-oriented view of the system’s structure
 The \textbf{Business Management} package handles all aspects of products, services, pricing, and financial configurations. 
 It is divided into two subpackages:
 \begin{itemize}
-    \item \textbf{Products and Services Management} – focuses on adding, editing, and maintaining products and services, as well as managing inventory.
+    \item \textbf{Item and Service Management} – focuses on adding, editing, and maintaining items and services, as well as managing inventory.
     \item \textbf{Finance} – deals with taxes, discounts, and financial reporting.
 \end{itemize}
 Together, they ensure that the POS system has accurate and up-to-date product and pricing information.
@@ -161,7 +243,7 @@ Together, they ensure that the POS system has accurate and up-to-date product an
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{graphics/Package3.png}
+    \includegraphics[width=0.9\textwidth]{graphics/Package12.png}
     \caption{Account Management Package}
     \label{fig:package3}
 \end{figure}
@@ -170,20 +252,20 @@ The \textbf{Account Management} package covers user and role administration, inc
 It ensures secure access control and supports different user types (e.g., cashier, manager, admin). 
 This package provides the foundation for authentication and authorization across the system.
 
-\subsection{Order Management Package}
+\subsection{Request Management Package}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{graphics/Package4.png}
-    \caption{Order Management Package}
+    \includegraphics[width=0.9\textwidth]{graphics/Package11.png}
+    \caption{Request Management Package}
     \label{fig:package4}
 \end{figure}
 
-The \textbf{Order Management} package focuses on the sales and reservation processes within FlowPOS. 
+The \textbf{Request Management} package focuses on the sales and reservation processes within FlowPOS. 
 It includes two subpackages:
 \begin{itemize}
-    \item \textbf{Orders Management} – responsible for creating, updating, and tracking customer orders and their statuses.
-    \item \textbf{Reservation} – manages service reservations, allowing users to create, edit, and validate booking details.
+    \item \textbf{Order Management} – responsible for creating, updating, and tracking customer orders and their statuses.
+    \item \textbf{Reservation Management} – manages service reservations, allowing users to create, edit, and validate booking details.
 \end{itemize}
 This module forms the operational core of the POS system, where transactions and customer interactions occur.
 % jei daugiau negu 10, tai darom persmulkiai
@@ -235,8 +317,8 @@ The diagram in Fig. \ref{fig:data_model} shows the main entities within our data
     \item \textbf{ItemOptionTagLink:} Relation for ItemOptions and Tags.
     \item \textbf{SericeTagLink:} Relation for Services and Tags.
     \item \textbf{PriceModifier:} Entity for handling discounts and taxes. The modifier type will be used to identify wether the modifier is a \textbf{flat} discount/tax or a \textbf{percentage} based one. The identifier will advise on how we should use the value to calculate the final price of an item/reservation.
-    \item \textbf{PriceModifierOrderLink:} Used to add a discount/tax o a specific item in a specific order.
-    \item \textbf{PriceModifierReservationLink:} Used to add a discount/tax o a specific item in a specific reservation.
+    \item \textbf{PriceModifierOrderLink:} Used to add a discount/tax to a specific item in a specific order.
+    \item \textbf{PriceModifierReservationLink:} Used to add a discount/tax to a specific item in a specific reservation.
     \item \textbf{Service:} A service that may be offered by a specific business (haircut, massage, etc.). Contains the hourly price which will be used to calculate the final price of the reservation, the service charge and identifier for the account of the employee will carry out the service.
     \item \textbf{Reservation:} An entity representing a booking for a certain service.
     \item \textbf{Order:} The entity representing an order of items from a specific business.
@@ -250,7 +332,7 @@ The diagram in Fig. \ref{fig:data_model} shows the main entities within our data
 
 \subsection{HTTP requests}
 
-All detailed API specifications are available in the Swagger yaml file. This file is located in the main GitHub repository of this project.
+All detailed API specifications are available in the Swagger yaml file. This file is located in the main GitHub repository of this project. This document only hosts descriptions of the API contracts.
 
 \subsubsection{Account Management APIs}
 \textbf{Account:}\\
@@ -294,15 +376,12 @@ All detailed API specifications are available in the Swagger yaml file. This fil
 \hspace*{2em}\textbf{PUT} Description: Update the status of a role assigned to an account\\
 
 
-\subsubsection{Function API}\\
-
 \textbf{Function:}\\
 \hspace*{1em}\textbf{/function}\\
 \hspace*{2em}\textbf{GET} Description: Get all available system functions\\
 
 
-\subsubsection{Business Management APIs}\\
-
+\subsubsection{Business Management APIs}
 \textbf{Business:}\\
 \hspace*{1em}\textbf{/business}\\
 \hspace*{2em}\textbf{POST} Description: Create business\\
@@ -331,64 +410,98 @@ All detailed API specifications are available in the Swagger yaml file. This fil
 \hspace*{2em}\textbf{PUT} Description: Update an item option\\
 \hspace*{2em}\textbf{DELETE} Description: Delete an item option\\
 
-
-
-\textbf{PriceModifier:}\\
-\hspace*{1em}\textbf{ } /\\
-\hspace*{2em}Description: 
-
-\subsubsection{Order Management APIs}
-
-\textbf{Order:}\\
-\hspace*{1em}\textbf{POST} /\\
-\hspace*{2em}Description: Create a new order
-
-\hspace*{1em}\textbf{GET} /\\
-\hspace*{2em}Description: Get all orders
-
-\hspace*{1em}\textbf{GET} /\\
-\hspace*{2em}Description: Get order by id
-
-\hspace*{1em}\textbf{PUT} /\\
-\hspace*{2em}Description: Update order details (status, etc.)
-
-\hspace*{1em}\textbf{POST} /\\
-\hspace*{2em}Description: Add an item to an existing order
-
-\hspace*{1em}\textbf{GET} /\\
-\hspace*{2em}Description: Get all items in an order
-
-\hspace*{1em}\textbf{PUT} /\\
-\hspace*{2em}Description: Update an item in an order
-
-\hspace*{1em}\textbf{DELETE} /\\
-\hspace*{2em}Description: 
-
-\hspace*{1em}\textbf{POST} /\\
-\hspace*{2em}Description: 
-
-\hspace*{1em}\textbf{POST} /\\
-\hspace*{2em}Description: 
-
-\hspace*{1em}\textbf{GET} /\\
-\hspace*{2em}Description: 
-
-\hspace*{1em}\textbf{DELETE} /\\
-\hspace*{2em}Description: 
-
-\textbf{Service:}\\
-\hspace*{1em}\textbf{ } /\\
-\hspace*{2em}Description: 
-
-\textbf{Reservation:}\\
-\hspace*{1em}\textbf{ } /\\
-\hspace*{2em}Description: 
-
 \subsubsection{Payment API}
 
 \textbf{Payment:}\\
-\hspace*{1em}\textbf{ } /\\
-\hspace*{2em}Description: 
+\hspace*{1em}\textbf{/payment}\\
+\hspace*{2em}\textbf{POST} Description: Create payment\\
+\hspace*{2em}\textbf{GET} Description: Get payments\\
+
+
+
+\textbf{PriceModifier:}\\
+\hspace*{1em}\textbf{/price-modifier}\\
+\hspace*{2em}\textbf{POST} Description: Create price modifier\\
+\hspace*{2em}\textbf{GET} Description: Get price modifiers\\
+
+\hspace*{1em}\textbf{/price-modifier/\{\textbf{id}\}}\\
+\hspace*{2em}\textbf{GET} Description: Get price modifier by id\\
+\hspace*{2em}\textbf{PUT} Description: Update price modifier details\\
+\hspace*{2em}\textbf{DELETE} Description: Delete price modifier\\
+
+
+\textbf{Tag:}\\
+\hspace*{1em}\textbf{/tag}\\
+\hspace*{2em}\textbf{POST} Description: Create tag\\
+\hspace*{2em}\textbf{GET} Description: Get tags\\
+
+\hspace*{1em}\textbf{/tag/\{\textbf{id}\}}\\
+\hspace*{2em}\textbf{GET} Description: Get tag by id\\
+\hspace*{2em}\textbf{PUT} Description: Update tag\\
+\hspace*{2em}\textbf{DELETE} Description: Delete tag\\
+
+
+\subsubsection{Order Management APIs}
+\textbf{Order:}\\
+\hspace*{1em}\textbf{/order}\\
+\hspace*{2em}\textbf{POST} Description: Create order\\
+\hspace*{2em}\textbf{GET} Description: Get orders\\
+
+\hspace*{1em}\textbf{/order/\{\textbf{id}\}}\\
+\hspace*{2em}\textbf{GET} Description: Get order by id\\
+\hspace*{2em}\textbf{PUT} Description: Update order details (status, etc.)\\
+
+\hspace*{1em}\textbf{/order/\{\textbf{id}\}/item}\\
+\hspace*{2em}\textbf{POST} Description: Add item to order\\
+\hspace*{2em}\textbf{GET} Description: Get order items\\
+
+\hspace*{1em}\textbf{/order/\{\textbf{orderId}\}/item/\{\textbf{itemId}\}}\\
+\hspace*{2em}\textbf{PUT} Description: Update order item\\
+\hspace*{2em}\textbf{DELETE} Description: Remove item from order\\
+
+\hspace*{1em}\textbf{/order/\{\textbf{orderId}\}/price-modifier}\\
+\hspace*{2em}\textbf{POST} Description: Apply price modifier to order\\
+
+\hspace*{1em}\textbf{/order/\{\textbf{orderId}\}/item/\{\textbf{itemId}\}/option}\\
+\hspace*{2em}\textbf{POST} Description: Add option to order item\\
+\hspace*{2em}\textbf{GET} Description: Get item options in order\\
+
+\hspace*{1em}\textbf{/order/\{\textbf{orderId}\}/item/\{\textbf{itemId}\}/option/\{\textbf{optionId}\}}\\
+\hspace*{2em}\textbf{DELETE} Description: Remove option from order item\\
+
+
+\textbf{Service:}\\
+\hspace*{1em}\textbf{/service}\\
+\hspace*{2em}\textbf{POST} Description: Create service\\
+\hspace*{2em}\textbf{GET} Description: Get services\\
+
+\hspace*{1em}\textbf{/service/\{\textbf{id}\}}\\
+\hspace*{2em}\textbf{GET} Description: Get service by id\\
+\hspace*{2em}\textbf{PUT} Description: Update service details\\
+\hspace*{2em}\textbf{DELETE} Description: Delete service\\
+
+\hspace*{1em}\textbf{/service/\{\textbf{id}\}/tag}\\
+\hspace*{2em}\textbf{GET} Description: Get service tags\\
+\hspace*{2em}\textbf{POST} Description: Add tag to service\\
+
+\hspace*{1em}\textbf{/service/\{\textbf{id}\}/tag/\{\textbf{tag}\}}\\
+\hspace*{2em}\textbf{DELETE} Description: Remove tag from service\\
+
+
+
+\textbf{Reservation:}\\
+\hspace*{1em}\textbf{/reservation}\\
+\hspace*{2em}\textbf{POST} Description: Create reservation\\
+\hspace*{2em}\textbf{GET} Description: Get reservations\\
+
+\hspace*{1em}\textbf{/reservation/\{\textbf{id}\}}\\
+\hspace*{2em}\textbf{GET} Description: Get reservation by id\\
+\hspace*{2em}\textbf{PUT} Description: Update reservation details\\
+
+\hspace*{1em}\textbf{/reservation/\{\textbf{reservationId}\}/price-modifier}\\
+\hspace*{2em}\textbf{POST} Description: Apply price modifier to reservation\\
+
+
 
 
 \subsection{HTTP responses}
